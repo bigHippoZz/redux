@@ -1,16 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import _ from 'lodash';
-import axios from 'axios';
-
+import Axios from 'axios';
+import { useCallback,useContext,useEffect,useMemo,useReducer,useRef,useState }  from 'react';
+import { curry,compose } from './Function';
 const App = () => {
- 
+  
+  useEffect(() => {
+    
+    return () => {
+      
+    }
+
+  })
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        <p  >
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
@@ -27,3 +34,4 @@ const App = () => {
 }
 
 export default App;
+

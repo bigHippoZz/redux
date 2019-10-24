@@ -5,14 +5,6 @@ import Axios from 'axios';
 import { useCallback,useContext,useEffect,useMemo,useReducer,useRef,useState }  from 'react';
 import { curry,compose } from './Function';
 const App = () => {
-  
-  useEffect(() => {
-    
-    return () => {
-      
-    }
-
-  })
   return (
     <div className="App">
       <header className="App-header">

@@ -1,7 +1,7 @@
 // 创建属于自己的actions
 const randomString = () =>
     Math.random()
-    .toString(37)
+    .toString(36)
     .substring(7)
     .split('')
     .join('.')

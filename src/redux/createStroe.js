@@ -1,3 +1,4 @@
+import ActionType from './utils/actionTypes';
 export default function (reducer, preloadeState, enhancer) {
     // preloadeState 初始值  ,enhancer ///增强器
     // 架构思路 构建store
@@ -6,7 +7,7 @@ export default function (reducer, preloadeState, enhancer) {
     // 获取数据
     // 返回store 包含各种methods
     let currentReducer = reducer
-    let currentState = preloadedState
+    let currentState = preloadeState
     let currentListeners = []
     let nextListeners = currentListeners
     let isDispatching = false
@@ -36,15 +37,18 @@ export default function (reducer, preloadeState, enhancer) {
             isDispatching = true
             // 触发reducer // 返回新的currentState
             currentState = currentReducer(currentState, action)
+            console.log(currentState, 'currentState')
         } finally {
             isDispatching = false
         }
         // 判断是否更换reducer 将reducer进行更新
         const listeners = (currentListeners = nextListeners)
+        console.log(nextListeners, 'nextListeners')
         for (let i = 0; i < listeners.length; i++) {
             const listener = listeners[i]
             listener()
         }
+        return action
     }
     //  发布订阅
     function subscribe(listener) {
@@ -52,6 +56,11 @@ export default function (reducer, preloadeState, enhancer) {
         // 取消订阅
         return function unsubscribe() {}
     }
+    console.log(
+        dispatch({
+            type: ActionType.INIT
+        })
+    )
     return {
         getState,
         dispatch,

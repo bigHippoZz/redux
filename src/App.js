@@ -17,7 +17,6 @@ import Todo from './view/Todo'
 const initState = {
     id: 2
 }
-
 const reducer = function(state = initState, action) {
     switch (action['type']) {
         case 'SET_STATE':

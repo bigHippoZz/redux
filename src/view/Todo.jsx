@@ -1,5 +1,5 @@
 import React from 'react'
-
+import styled from 'styled-components'
 import {
     useCallback,
     useContext,
@@ -72,8 +72,17 @@ const Todo = (...args) => {
             <Button type="primary">全部{list.length}</Button>
             <Button type="primary">已完成{carryOut(list)}</Button>
             <Button type="primary">未完成</Button>
+            <Buttonhaha className="hahha">hhaha</Buttonhaha>
         </div>
     )
 }
-
 export default Todo
+
+const Buttonhaha = styled.button`
+    background: transparent;
+    border-radius: 3px;
+    border: 2px solid palevioletred;
+    color: palevioletred;
+    margin: 0 1em;
+    padding: 0.25em 1em;
+`

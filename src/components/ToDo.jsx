@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { today, tomorrow } from '../store'
 import styled from 'styled-components'
-
+import { useDispatch } from 'react-redux'
 const ToDoContainer = styled.div`
     flex: 1;
     margin: 0 8px;
     overflow: hidden;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     color: #666;
+    border-radius: 8px;
+    background-color: white;
     /* visibility: hidden; */
     .todo_head {
         display: flex;
@@ -68,12 +70,34 @@ const ToDoContainer = styled.div`
         }
     }
 `
-
-const ToDo = () => {
-    console.log(today, tomorrow)
+const ToDo = props => {
+    const { todo } = props
+    const todoContainer = useRef()
+    const dispatch = useDispatch()
+    const handleClick = () => {
+        console.log('999')
+        console.log(todo)
+        const appRect = document.querySelector('#root').getBoundingClientRect()
+        const elRect = todoContainer.current.getBoundingClientRect()
+        const rect = {}
+        console.log(elRect, appRect)
+        // 获取root元素的宽度和高度
+        // 获取el相对于root的top 和  left 进行position
+        rect.top = elRect.top - appRect.top
+        rect.left = elRect.left - appRect.left
+        rect.width = elRect.width
+        rect.height = elRect.height
+        rect.appWidth = appRect.width
+        rect.appHeight = appRect.height
+        console.log(rect)
+        dispatch({
+            type: 'SELECTED_TO_DO',
+            payload: { rect, todo }
+        })
+    }
     return (
-        <ToDoContainer>
-            <div className="todo_head">
+        <ToDoContainer ref={todoContainer}>
+            <div className="todo_head" onClick={handleClick}>
                 <div className="todo_icon">
                     <i></i>
                 </div>

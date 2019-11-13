@@ -17,10 +17,10 @@ const TodoListContainer = styled.div`
         flex: 1;
         transition: transform 0.5s ease;
     }
-    .todo {
+    /* .todo {
         border-radius: 8px;
         background-color: white;
-    }
+    } */
     .todo-list__selected {
         transform: scaleX(1.25);
     }
@@ -70,7 +70,7 @@ const TodoList = () => {
                                 100}%, 0, 0)`
                         }}
                     >
-                        <ToDo></ToDo>
+                        <ToDo todo={x}></ToDo>
                     </li>
                 ))}
             </ul>

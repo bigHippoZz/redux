@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import avatar from '../assets/WLOP+Aeolian3+by+Eliza+Final.00_00_54_13.静止001.png'
+
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 const AvatarContainer = styled.div`
     display: flex;
     padding: 0 40px;
@@ -51,12 +53,22 @@ const AvatarContainer = styled.div`
 
 const Avatar = props => {
     // const { title, right, left } = props
+    const history = useHistory()
+    const location = useLocation()
+    const param = useParams()
     const [show, setShow] = useState(false)
     const handleClick = () => {
-        setShow(!show)
+        console.log(props)
+        console.log(location, param)
+        history.push('/transtion', {
+            id: {
+                sid: 99
+            }
+        })
+        // setShow(!show)
     }
     return (
-        <AvatarContainer className={show ? 'avatar__selected' : ''}>
+        <AvatarContainer>
             <div onClick={handleClick} className="avatar_face">
                 <img src={avatar} />
             </div>

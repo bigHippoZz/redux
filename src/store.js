@@ -127,11 +127,13 @@ const initState = {
             colors: ['#2c7d59', '#3ba776']
         }
     ],
-    currentIndex: 0
+    currentIndex: 0, //选中索引
+    selected: null, // 当前是否选中
+    unselect: null
 }
 const reducer = (state = initState, actions) => {
     const { type, payload } = actions
-    const { currentIndex, todos } = state
+    const { currentIndex, todos, selected, unselect } = state
     switch (type) {
         case 'INCREMENT':
             return Object.assign({}, state, {
@@ -145,8 +147,14 @@ const reducer = (state = initState, actions) => {
             if (currentIndex < todos.length - 1)
                 state['currentIndex'] = currentIndex + 1
             return Object.assign({}, state)
+
         case 'PRE_TO_DO':
             if (currentIndex > 0) state['currentIndex'] = currentIndex - 1
+            return Object.assign({}, state)
+        // 选中todo
+        case 'SELECTED_TO_DO':
+            state.selected = payload
+            state.unselect = null
             return Object.assign({}, state)
         default:
             return state

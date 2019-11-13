@@ -17,6 +17,7 @@ const GradientColorContainer = styled.div`
 
 const GradientColor = props => {
     const { active, color } = props
+
     const gradientColor = useMemo(() => {
         const colorBottom = `color-stop(30%, ${color[0]})`
         const colorTop = `to(${color[1]})`

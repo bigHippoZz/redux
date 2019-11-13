@@ -4,7 +4,7 @@ import AppBar from '../components/AppBar'
 import Avatar from '../components/Avatar'
 import Gradient from '../components/Gradient'
 import TodoList from '../components/TodoList'
-
+import TodoDetail from '../components/TodoDetail'
 const Todo = () => {
     return (
         <div>
@@ -12,6 +12,7 @@ const Todo = () => {
             <Avatar />
             <Gradient />
             <TodoList />
+            <TodoDetail />
         </div>
     )
 }

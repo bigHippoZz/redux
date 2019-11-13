@@ -13,10 +13,15 @@ const GradientContainer = styled.div`
 `
 const Gradient = () => {
     const todos = useSelector(state => state['todos'])
+    const currentIndex = useSelector(state => state['currentIndex'])
     return (
         <GradientContainer>
-            {todos.map(x => (
-                <GradientColor key={x.name} color={x.colors}></GradientColor>
+            {todos.map((x, index) => (
+                <GradientColor
+                    active={index <= currentIndex}
+                    key={x.name}
+                    color={x.colors}
+                ></GradientColor>
             ))}
         </GradientContainer>
     )

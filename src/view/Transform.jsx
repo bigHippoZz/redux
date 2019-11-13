@@ -34,7 +34,6 @@ const Transform = props => {
     const preTodo = () => {
         currentIndex > 0 && setCurrentIndex(currentIndex - 1)
     }
-
     const handleClick = () => {
         dispatch({
             type: 'INCREMENT',

@@ -13,7 +13,7 @@ const TodoDetailContainer = styled.div`
 `
 const TodoDetail = () => {
     const selected = useSelector(x => x.selected)
-    console.log(selected)
+    // console.log(selected)
 
     const handleEntering = el => {
         Object.assign(el.style, {

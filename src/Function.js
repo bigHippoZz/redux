@@ -1,4 +1,6 @@
 import fp from 'lodash/fp'
+// import {  fromEvent } from 'rxjs'
+
 // 组合函数
 export const compose = (...fns) => (...args) =>
     fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0]
@@ -83,40 +85,113 @@ const getPerson = partial(ajax, 'person', {
     personId: 66
 })
 
+// 函数式编程的实践
 const output = x => console.log(x)
-// const personId = partial(prop, 'personId')
+// const personId = fp.prop('personId')
+// const consoleLog = fp.compose(output, fp.prop('id'))
+// const nextGetorder = partialRight(getOrder, consoleLog)
+// const idObj = partial(makeObjProp, 'id')
+// const Obj = fp.compose(idObj, personId)
+// const res = fp.compose(nextGetorder, Obj)
+//  添加name
+const addStockName = stock => {
+    return setProp('name', stock, stock.id)
+}
+// val 添加+
+const formatSign = val => {
+    if (Number(val) > 0) {
+        return `+${val}`
+    }
+    return val
+}
+// val 添加$
+const formatCurrency = val => {
+    return `$${val}`
+}
+// 类似functor的map
+function transformObservable(mapperFn, obsv) {
+    return obsv.map(mapperFn)
+}
+// 独立适配方案 就是将原生方法转换成自己的函数
+const unboundMethod = (methodName, argCount = 2) =>
+    curry((...args) => {
+        var obj = args.pop()
+        return obj[methodName](...args)
+    }, argCount)
+// 保留小数点的后两位
+const formatDecimal = unboundMethod('toFixed')(2)
+// 先把价格添加添加$ 然后保留小数点后两位
+const formatPrice = fp.pipe(formatDecimal, formatCurrency)
+// 先把价格添加添加+ 然后保留小数点后两位
+const formatChange = fp.pipe(formatDecimal, formatSign)
+// 获取dom的属性
+function getElemAttr(elem, prop) {
+    return elem.getAttribute(prop)
+}
+// 更改dom的属性 dom 属性 val
+function setElemAttr(elem, prop, val) {
+    // 副作用!!!!!!!!!EFFECT
+    return elem.setAttribute(prop, val)
+}
+// 更改dom元素
+function setDOMContent(elem, html) {
+    // 副作用!!!!!!!!!!!!
+    elem.innerHTML = html
+    return elem
+}
+// 在父元素的基础上添加元素
+function appendDOMChild(parentNode, childNode) {
+    // 副作用!!!!!!!!!!
+    parentNode.appendChild(childNode)
+    return parentNode
+}
 
-// const idObj = partial(makeObjProp, 'person')
+function matchingStockId(id) {
+    return function isStock(node) {
+        return getStockId(node) == id
+    }
+}
+// 验证dom class是否正确
+function isStockInfoChildElem(elem) {
+    return /\bstock-/i.test(getClassName(elem))
+}
+// 替换字符串中的某些值
+function stripPrefix(prefixRegex) {
+    return function mapperFn(val) {
+        return val.replace(prefixRegex, '')
+    }
+}
+//来保证我们得到的是一个数组（即使里面只有一个元素）
+function listify(listOrItem) {
+    if (!Array.isArray(listOrItem)) {
+        return [listOrItem]
+    }
+    return listOrItem
+}
+//获取dom 的子节点的所有 类型为数组
+const getDOMChildren = pipe(
+    listify,
+    flatMap(pipe(curry(prop)('childNodes'), Array.from))
+)
 
-// const lookUpObj = compose(idObj, personId)
-
-// const outId = partial(prop, 'person')
-
-// const outputId = compose(output, outId)
-
-// const nextGetOrder = partialRight(getOrder, outputId)
-
-// const res = compose(nextGetOrder, lookUpObj)
-
-// // getPerson(res)
-// const foo = {
-//     id: { id: 78 }
-// }
-const personID = fp.prop('personId')
-
-getPerson(function orderFound(order) {
-    // getOrder({ id: order.personId }, function personFound(person) {
-    //     output(person.id)
-    // })
-    // output(personID(order))
-})
-
-const handleConsole = fp.compose(output, personID)
-
-const nextGetOrder = fp.partialRight(getOrder, handleConsole)
-
-const idObj = fp.partial(makeObjProp, 'id')
-
-getPerson(compose(nextGetOrder, idObj, fp.prop('personId')))
-
-const currAjax = curry(ajax)
+const createElement = document.createElement.bind(document)
+const getElemAttrByName = curry(reverseArgs(getElemAttr), 2)
+const getStockId = getElemAttrByName('data-stock-id')
+const getClassName = getElemAttrByName('class')
+function formatStockNumbers(stock) {
+    const currentObj = Object.assign({}, stock)
+    currentObj.price = formatPrice(currentObj.price)
+    currentObj.change = formatChange(currentObj.change)
+    return currentObj
+    // var updateTuples = [
+    //     ['price', formatPrice(stock  .price)],
+    //     ['change', formatChange(stock.change)]
+    // ]
+    // console.log(updateTuples)
+    // return fp.reduce(function formatter(stock, [propName, val]) {
+    //     console.log(stock, propName, val)
+    //     return setProp(propName, stock, val)
+    // })(stock)(updateTuples)
+}
+const stock = { id: 'AAPL', price: 121.7, change: 0.01 }
+console.log(formatStockNumbers(stock))

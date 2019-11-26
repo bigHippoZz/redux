@@ -162,7 +162,6 @@ const reducer = (state = initState, actions) => {
 }
 
 const store = createStore(reducer)
-
 export const now = new Date()
 export const today = new Date(
     now.getFullYear(),
